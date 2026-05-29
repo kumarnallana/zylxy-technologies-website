@@ -1,0 +1,73 @@
+@keyframes orbPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 0.6;
+  }
+}
+
+@keyframes orbFloat {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) translateY(0px) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateY(-12px) scale(1.02);
+  }
+}
+
+@keyframes nodeFloat {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) translate(0px, 0px);
+  }
+  33% {
+    transform: translate(-50%, -50%) translate(6px, -8px);
+  }
+  66% {
+    transform: translate(-50%, -50%) translate(-7px, 5px);
+  }
+}
+
+@keyframes constellationSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 65s linear infinite;
+}
+
+.mask-gradient {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+}

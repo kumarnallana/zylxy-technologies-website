@@ -1,7 +1,13 @@
+import ClientsSection from "@/components/sections/ClientsSection";
+import Hero from "@/components/sections/Hero";
+import ServicesExplorer from "@/components/sections/ServicesExplorer";
+
 export default function Home() {
   return (
     <main>
-      <h1>Zylxy Technologies</h1>
+      <Hero />
+      <ClientsSection />
+      <ServicesExplorer />
     </main>
   );
 }
