@@ -4,9 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
-  return servicesData.services.map((s) => ({
-    slug: s.id || s.title.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-  }));
+  return [{ slug: "test-service" }];
 }
 
 export default async function ServiceDetailPage({ params }) {
