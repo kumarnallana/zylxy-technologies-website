@@ -6,7 +6,7 @@ export const heroData = {
     textAfter: " for digital scale.",
   },
   descriptionPrimary:
-    "Zylxy Technologies delivers end-to-end web, app, and software solutions — plus industry-grade digital training — for startups, SMEs, and enterprises across India and the USA.",
+    "Zylxy Technologies empowers growing businesses with scalable software, AI solutions, and modern digital platforms. We also provide industry-grade digital training, serving startups, SMEs, and enterprises across India and the USA.",
   descriptionSecondary:
     "In business since 2019 · HSR Layout, Bangalore · Serving clients globally",
   buttons: {
