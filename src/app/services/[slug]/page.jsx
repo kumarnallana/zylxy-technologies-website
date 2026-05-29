@@ -3,6 +3,12 @@ import { servicesStyles } from "@/styles/sections/services";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+export async function generateStaticParams() {
+  return servicesData.services.map((s) => ({
+    slug: s.id || s.title.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+  }));
+}
+
 export default async function ServiceDetailPage({ params }) {
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
