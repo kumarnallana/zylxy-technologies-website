@@ -106,7 +106,7 @@ export default function Hero() {
                       to { transform: rotate(360deg); }
                     }
                     .stabilized-mesh-group {
-                      animation: perfectCentricSpin 24s linear infinite;
+                      animation: perfectCentricSpin 500s linear infinite;
                     }
                   `}</style>
                 </defs>
