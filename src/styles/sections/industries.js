@@ -4,10 +4,10 @@ export const industriesStyles = {
   headerRow:
     "flex flex-col md:flex-row md:items-end justify-between mb-14 gap-4",
   titleArea: "text-left",
-  pillLine: "inline-flex items-center gap-2 mb-3",
-  pillLineBar: "w-5.5 h-0.5 bg-[#C1392B] rounded-sm",
+  pillLine: "flex items-center gap-2.5 mb-2",
+  pillLineBar: "w-5.5 h-0.5 bg-[#2563EB] rounded-sm",
   pillText:
-    "text-xs font-bold font-inter text-[#C1392B] tracking-widest uppercase",
+    "text-xs font-bold font-inter text-[#60A5FA] tracking-widest uppercase",
   mainHeading:
     "font-syne font-extrabold text-3xl sm:text-4xl md:text-[44px] text-black tracking-tighter leading-[1.05] mt-4",
   subHeading:

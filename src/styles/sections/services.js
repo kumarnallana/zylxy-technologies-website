@@ -1,42 +1,42 @@
 export const servicesStyles = {
-  section: "bg-[#F7F3EE] py-24 scroll-mt-28",
-  wrapper: "max-w-7xl mx-auto px-8",
-  headerRow:
-    "flex flex-col md:flex-row md:items-end justify-between mb-12 gap-5",
-  titleArea: "max-w-2xl",
+  section: "bg-[#F0F4FF] py-[96px]",
+  wrapper: "max-w-[1200px] mx-auto px-8",
+  headerRow: "flex items-end justify-between mb-[52px] flex-wrap gap-5",
+  titleArea: "",
   pillLine: "flex items-center gap-2.5 mb-2",
-  pillLineBar: "w-5.5 h-0.5 bg-[#C1392B] rounded-sm",
+  pillLineBar: "w-5.5 h-0.5 bg-[#2563EB] rounded-sm",
   pillText:
-    "text-xs font-bold font-inter text-[#C1392B] tracking-widest uppercase",
+    "text-xs font-bold font-inter text-[#60A5FA] tracking-widest uppercase",
   mainHeading:
-    "font-syne font-extrabold text-3xl sm:text-4xl md:text-5xl text-black tracking-tighter leading-[1.05]",
+    "font-syne font-extrabold text-[clamp(26px,3vw,44px)] text-[#050E21] tracking-[-0.04em] leading-[1.05]",
   subHeading:
-    "text-sm text-slate-500 font-inter leading-relaxed mt-2.5 max-w-lg",
+    "text-[14px] text-[#475569] font-inter leading-[1.7] mt-[10px] max-w-[380px]",
   tabContainer:
-    "flex bg-slate-100 rounded p-1 gap-0.5 flex-wrap shrink-0 items-center",
+    "flex p-[5px] gap-[4px] shrink-0 bg-white border border-[#E2E8F0] rounded-[10px] shadow-[0_1px_6px_rgba(15,23,42,0.05)]",
   tabBtn:
-    "px-4 py-1.5 rounded-sm text-xs font-semibold font-inter tracking-wide transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer",
-  tabBtnActive: "bg-white text-[#C1392B] shadow-sm",
-  tabBtnInactive: "bg-transparent text-slate-500 hover:bg-white/50",
-  tabCounter: "text-[10px] font-bold px-1.5 py-0.5 rounded-sm transition-all",
-  tabCounterActive: "bg-[#C1392B]/10 text-[#C1392B]",
-  tabCounterInactive: "text-slate-400 bg-transparent",
-  grid: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5",
-  card: "group relative bg-white border border-slate-200 rounded-sm p-5.5 flex flex-col gap-3 text-left w-full transition-all duration-200 hover:border-slate-300 hover:translate-y-[-2px] hover:shadow-md cursor-pointer",
+    "px-[18px] py-[8px] rounded-[7px] text-[13px] font-semibold font-inter cursor-pointer border-none transition-all duration-150 flex items-center gap-[7px] whitespace-nowrap",
+  tabBtnActive:
+    "bg-[#2563EB] text-white shadow-[0_2px_10px_rgba(37,99,235,0.35)]",
+  tabBtnInactive:
+    "text-[#475569] bg-transparent hover:bg-[rgba(37,99,235,0.08)]",
+  tabCounter:
+    "text-[10px] font-bold px-[6px] py-[1px] rounded-[4px] transition-all duration-150",
+  tabCounterActive: "text-white bg-[rgba(255,255,255,0.2)]",
+  tabCounterInactive: "text-[#94A3B8] bg-[#EFF6FF]",
+  grid: "grid grid-cols-[repeat(auto-fill,minmax(265px,1fr))] gap-[16px]",
+  card: "group bg-white border border-[#E2E8F0] rounded-[14px] p-[24px] cursor-pointer transition-all duration-200 flex flex-col gap-[14px] shadow-[0_1px_4px_rgba(15,23,42,0.05)] hover:-translate-y-[3px] hover:shadow-[0_12px_40px_rgba(37,99,235,0.12)]",
   cardTopRow: "flex items-start justify-between",
   iconBox:
-    "w-10.5 h-10.5 rounded-sm flex items-center justify-center text-xl border",
-  cardIndicatorOuter:
-    "w-4 h-4 rounded-full border border-cyan-400/40 flex items-center justify-center bg-cyan-50/30",
-  cardIndicatorInner:
-    "w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_#22d3ee]",
+    "w-[46px] h-[46px] rounded-[12px] flex items-center justify-center text-[20px] border",
+  cardArrow:
+    "text-[14px] transition-opacity duration-150 opacity-0 group-hover:opacity-100",
   cardTitle:
-    "font-syne font-bold text-base text-black mb-1.5 leading-snug tracking-tight",
-  cardDesc: "text-[13px] text-slate-500 font-inter leading-relaxed",
-  tagBox: "flex gap-1.5 flex-wrap mt-auto pt-4",
+    "font-syne font-bold text-[15px] text-[#050E21] mb-[8px] leading-[1.25] tracking-[-0.02em]",
+  cardDesc: "text-[13px] text-[#475569] font-inter leading-[1.7]",
+  tagBox: "flex gap-[6px] flex-wrap mt-auto",
   tagItem:
-    "text-[11px] font-semibold font-inter px-2 py-0.5 rounded-sm border tracking-wide",
-  btnRow: "mt-12 flex justify-center",
+    "text-[11px] font-semibold font-inter px-[9px] py-[3px] rounded-[100px] border tracking-[0.01em]",
+  btnRow: "mt-[44px] flex justify-center",
   consultBtn:
-    "px-6 py-3 bg-[#C1392B] text-white text-sm font-semibold font-inter rounded-sm shadow-sm tracking-wide transition-all hover:bg-[#A93226] hover:shadow-md hover:translate-y-[-1px]",
+    "px-[26px] py-[13px] bg-[#2563EB] text-white text-[14px] font-semibold font-inter rounded-[6px] shadow-[0_4px_14px_rgba(37,99,235,0.3)] transition-all hover:bg-[#1D4ED8] hover:-translate-y-[1px] cursor-pointer border-none",
 };

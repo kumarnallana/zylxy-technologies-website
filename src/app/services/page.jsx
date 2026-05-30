@@ -26,11 +26,13 @@ export default function ServicesPage() {
     <section id="services-section" className={servicesStyles.section}>
       <div className={servicesStyles.wrapper}>
         <div className={servicesStyles.headerRow}>
-          <div className={servicesStyles.titleArea}>
+          <div>
+            {/* Exactly matches the solid bar layout config */}
             <div className={servicesStyles.pillLine}>
               <div className={servicesStyles.pillLineBar} />
-              <span className={servicesStyles.pillText}>WHAT WE DO</span>
+              <span className={servicesStyles.pillText}>What we do</span>
             </div>
+
             <h2 className={servicesStyles.mainHeading}>
               End-to-end digital solutions
             </h2>
@@ -55,19 +57,13 @@ export default function ServicesPage() {
                 activeTab.toLowerCase().trim() === tab.id.toLowerCase().trim();
 
               return (
-                <button
+                <TabBtn
                   key={tab.id}
-                  type="button"
+                  label={tab.label}
+                  count={count}
+                  active={isActive}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`${servicesStyles.tabBtn} ${isActive ? servicesStyles.tabBtnActive : servicesStyles.tabBtnInactive}`}
-                >
-                  {tab.label}
-                  <span
-                    className={`${servicesStyles.tabCounter} ${isActive ? servicesStyles.tabCounterActive : servicesStyles.tabCounterInactive}`}
-                  >
-                    {count}
-                  </span>
-                </button>
+                />
               );
             })}
           </div>
@@ -75,49 +71,11 @@ export default function ServicesPage() {
 
         <div className={servicesStyles.grid}>
           {filteredServices.map((service) => (
-            <div
+            <ServiceCard
               key={service.id || service.title}
+              s={service}
               onClick={() => handleSelectService(service)}
-              className={servicesStyles.card}
-            >
-              <div>
-                <div className={servicesStyles.cardTopRow}>
-                  <div
-                    className={servicesStyles.iconBox}
-                    style={{
-                      color: service.accent,
-                      backgroundColor: service.accentBg,
-                      borderColor: `${service.accent}15`,
-                    }}
-                  >
-                    {service.icon}
-                  </div>
-                  <div className={servicesStyles.cardIndicatorOuter}>
-                    <div className={servicesStyles.cardIndicatorInner} />
-                  </div>
-                </div>
-                <div>
-                  <h3 className={servicesStyles.cardTitle}>{service.title}</h3>
-                  <p className={servicesStyles.cardDesc}>{service.desc}</p>
-                </div>
-              </div>
-
-              <div className={servicesStyles.tagBox}>
-                {service.tags.map((t) => (
-                  <span
-                    key={t}
-                    className={servicesStyles.tagItem}
-                    style={{
-                      color: service.accent,
-                      backgroundColor: service.accentBg,
-                      borderColor: `${service.accent}20`,
-                    }}
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
+            />
           ))}
         </div>
 
@@ -128,5 +86,83 @@ export default function ServicesPage() {
         </div>
       </div>
     </section>
+  );
+}
+
+// React hover state removed completely; handled natively by Tailwind CSS modifiers
+function TabBtn({ label, count, active, onClick }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`${servicesStyles.tabBtn} ${
+        active ? servicesStyles.tabBtnActive : servicesStyles.tabBtnInactive
+      }`}
+    >
+      {label}
+      <span
+        className={`${servicesStyles.tabCounter} ${
+          active
+            ? servicesStyles.tabCounterActive
+            : servicesStyles.tabCounterInactive
+        }`}
+      >
+        {count}
+      </span>
+    </button>
+  );
+}
+
+function ServiceCard({ s, onClick }) {
+  const [h, setH] = useState(false);
+
+  return (
+    <div
+      onClick={onClick}
+      onMouseEnter={() => setH(true)}
+      onMouseLeave={() => setH(false)}
+      className={servicesStyles.card}
+      style={h ? { borderColor: `${s.accent}55` } : undefined}
+    >
+      <div className={servicesStyles.cardTopRow}>
+        {/* Dynamic theme mappings remain inline seamlessly */}
+        <div
+          className={servicesStyles.iconBox}
+          style={{
+            background: s.accentBg,
+            borderColor: `${s.accent}22`,
+            color: s.accent,
+          }}
+        >
+          {s.icon}
+        </div>
+
+        {/* Arrow visibility transition handled strictly through parent group hover configurations */}
+        <span className={servicesStyles.cardArrow} style={{ color: s.accent }}>
+          →
+        </span>
+      </div>
+
+      <div>
+        <h3 className={servicesStyles.cardTitle}>{s.title}</h3>
+        <p className={servicesStyles.cardDesc}>{s.desc}</p>
+      </div>
+
+      <div className={servicesStyles.tagBox}>
+        {s.tags.map((t) => (
+          <span
+            key={t}
+            className={servicesStyles.tagItem}
+            style={{
+              background: s.accentBg,
+              color: s.accent,
+              borderColor: `${s.accent}28`,
+            }}
+          >
+            {t}
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }
