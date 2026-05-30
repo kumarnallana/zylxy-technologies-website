@@ -5,9 +5,9 @@ export const testimonialsStyles = {
     "flex flex-col md:flex-row md:items-end justify-between mb-12 gap-5",
   titleArea: "text-left",
   pillLine: "flex items-center gap-2.5 mb-2",
-  pillLineBar: "w-5.5 h-0.5 bg-[#2563EB] rounded-sm",
+  pillLineBar: "w-5.5 mb-5 h-[2] bg-blue-600 rounded-sm",
   pillText:
-    "text-xs font-bold font-inter text-[#2563EB] tracking-widest uppercase",
+    "text-[13px] relative top-[-10] font-bold font-inter text-blue-600 tracking-widest uppercase",
   mainHeading:
     "font-syne font-extrabold text-3xl sm:text-4xl md:text-5xl text-[#131110] tracking-tighter leading-[1.05]",
   subHeading:

@@ -5,9 +5,9 @@ export const caseStudiesStyles = {
     "flex flex-col md:flex-row md:items-end justify-between mb-12 gap-5",
   titleArea: "max-w-2xl",
   pillLine: "flex items-center gap-2.5 mb-2",
-  pillLineBar: "w-5.5 h-0.5 bg-[#2563EB] rounded-sm",
+  pillLineBar: "w-5.5 h-0.5 mb-5 bg-[#2563EB] rounded-sm",
   pillText:
-    "text-xs font-bold font-inter text-[#60A5FA] tracking-widest uppercase",
+    "text-[13px] relative top-[-10] font-bold font-inter text-[#60A5FA] tracking-widest uppercase",
   mainHeading:
     "font-syne font-extrabold text-3xl sm:text-4xl md:text-5xl text-white tracking-tighter leading-[1.05]",
   subHeading:

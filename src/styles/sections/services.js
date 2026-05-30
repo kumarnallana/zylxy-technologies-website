@@ -6,7 +6,7 @@ export const servicesStyles = {
   pillLine: "flex items-center gap-2.5 mb-2",
   pillLineBar: "w-5.5 h-0.5 bg-[#2563EB] rounded-sm",
   pillText:
-    "text-xs font-bold font-inter text-[#60A5FA] tracking-widest uppercase",
+    "text-[14px] font-bold font-inter text-blue-600 tracking-widest uppercase",
   mainHeading:
     "font-syne font-extrabold text-[clamp(26px,3vw,44px)] text-[#050E21] tracking-[-0.04em] leading-[1.05]",
   subHeading:

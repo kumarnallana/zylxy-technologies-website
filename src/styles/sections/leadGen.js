@@ -7,7 +7,7 @@ export const leadGenStyles = {
   pillLine: "flex items-center justify-center gap-2.5 mb-4",
   pillLineBar: "w-5.5 h-0.5 bg-[#2563EB] rounded-sm",
   pillText:
-    "text-[11px] font-bold font-inter text-[#60A5FA] tracking-[0.12em] uppercase",
+    "text-[14px] font-bold font-inter text-[#60A5FA] tracking-[0.12em] uppercase",
   mainHeading:
     "font-syne font-extrabold text-[clamp(28px,3.5vw,50px)] text-white tracking-[-0.04em] leading-none mb-4.5",
   subHeading:
@@ -25,7 +25,7 @@ export const leadGenStyles = {
   input:
     "w-full p-[12px_14px] border border-white/[0.15] rounded-[6px] text-[14px] font-inter text-white bg-transparent outline-none transition-colors duration-200 focus:border-[#2563EB] placeholder:text-white/30",
   select:
-    "w-full p-[12px_14px] border border-white/[0.15] rounded-[6px] text-[14px] font-inter text-white bg-transparent outline-none transition-colors duration-200 focus:border-[#2563EB] appearance-none cursor-pointer bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%228%22%20viewBox%3D%220%200%2012%208%22%3E%3Cpath%20d%3D%22M1%201l5%205%205-5%22%20stroke%3D%22rgba(255,255,255,0.4)%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E')] bg-no-repeat bg-[position:right_14px_center] pr-10",
+    "w-full p-[12px_14px] border border-white/[0.15] rounded-[6px] text-[14px] font-inter text-white bg-transparent outline-none transition-colors duration-200 focus:border-[#2563EB] appearance-none cursor-pointer bg-no-repeat bg-[position:right_14px_center] pr-10",
   textarea:
     "w-full p-[12px_14px] border border-white/[0.15] rounded-[6px] text-[14px] font-inter text-white bg-transparent outline-none transition-colors duration-200 focus:border-[#2563EB] placeholder:text-white/30 resize-y min-h-[120px]",
 

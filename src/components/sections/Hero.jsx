@@ -1,3 +1,5 @@
+"use client";
+
 import { heroData } from "@/data/heroData";
 import { heroStyles } from "@/styles/sections/hero";
 
@@ -50,107 +52,375 @@ export default function Hero() {
         </div>
 
         <div className={heroStyles.rightColumn}>
-          <div className={heroStyles.orbContainer}>
-            <div className={heroStyles.orbRingOuter} />
-            <div className={heroStyles.orbRingMid} />
-            <div className={heroStyles.orbRingInner} />
-            <div className={heroStyles.orbGlowCore} />
+          <div className={heroStyles.orbContainerWrapper}>
+            <div className={heroStyles.orbContainer}>
+              {/* Static Ambient Radar Rings */}
+              <div
+                className={heroStyles.orbRingOuter}
+                style={{ animationDelay: "0s" }}
+              />
+              <div
+                className={heroStyles.orbRingMid}
+                style={{ animationDelay: "-2.5s" }}
+              />
+              <div
+                className={heroStyles.orbRingInner}
+                style={{ animationDelay: "-5s" }}
+              />
+              <div className={heroStyles.orbGlowCore} />
 
-            <div
-              className="absolute top-[25%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-[radial-gradient(circle,rgba(148,197,253,0.9),rgba(37,99,235,0.6))] shadow-[0_0_18px_rgba(96,165,250,0.5)] animate-[nodeFloat_4s_ease-in-out_infinite]"
-              style={{ animationDelay: "0s" }}
-            />
-            <div
-              className="absolute top-[50%] left-[22%] -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[radial-gradient(circle,rgba(148,197,253,0.9),rgba(37,99,235,0.6))] shadow-[0_0_14px_rgba(96,165,250,0.5)] animate-[nodeFloat_4s_ease-in-out_infinite]"
-              style={{ animationDelay: "0.6s" }}
-            />
-            <div
-              className="absolute top-[50%] left-[78%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[radial-gradient(circle,rgba(148,197,253,0.9),rgba(37,99,235,0.6))] shadow-[0_0_20px_rgba(96,165,250,0.5)] animate-[nodeFloat_4s_ease-in-out_infinite]"
-              style={{ animationDelay: "1.1s" }}
-            />
-            <div
-              className="absolute top-[75%] left-[38%] -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[radial-gradient(circle,rgba(148,197,253,0.9),rgba(37,99,235,0.6))] shadow-[0_0_14px_rgba(96,165,250,0.5)] animate-[nodeFloat_4s_ease-in-out_infinite]"
-              style={{ animationDelay: "0.4s" }}
-            />
-            <div
-              className="absolute top-[38%] left-[68%] -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[radial-gradient(circle,rgba(148,197,253,0.9),rgba(37,99,235,0.6))] shadow-[0_0_12px_rgba(96,165,250,0.5)] animate-[nodeFloat_4s_ease-in-out_infinite]"
-              style={{ animationDelay: "1.6s" }}
-            />
-            <div
-              className="absolute top-[62%] left-[60%] -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-[radial-gradient(circle,rgba(148,197,253,0.9),rgba(37,99,235,0.6))] shadow-[0_0_16px_rgba(96,165,250,0.5)] animate-[nodeFloat_4s_ease-in-out_infinite]"
-              style={{ animationDelay: "0.9s" }}
-            />
+              {/* Master SVG Canvas - Kept perfectly static to prevent external layout drift */}
+              <svg
+                className={heroStyles.svgCanvas}
+                viewBox="0 0 600 600"
+                style={{ width: "100%", height: "100%" }}
+              >
+                <defs>
+                  {/* Radial Core Glow Definition */}
+                  <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="#38BDF8" stopOpacity="1" />
+                    <stop offset="30%" stopColor="#0284C7" stopOpacity="0.5" />
+                    <stop offset="100%" stopColor="#0369A1" stopOpacity="0" />
+                  </radialGradient>
 
-            <div className={heroStyles.orbCenterNode} />
+                  {/* Node Pulse Glow Definition */}
+                  <filter
+                    id="glow"
+                    x="-20%"
+                    y="-20%"
+                    width="140%"
+                    height="140%"
+                  >
+                    <feGaussianBlur stdDeviation="4" result="blur" />
+                    <feComposite
+                      in="SourceGraphic"
+                      in2="blur"
+                      operator="over"
+                    />
+                  </filter>
 
-            <svg className={heroStyles.svgCanvas} viewBox="0 0 620 620">
-              <line
-                x1="310"
-                y1="155"
-                x2="136"
-                y2="310"
-                stroke="#60A5FA"
-                strokeWidth="0.8"
-              />
-              <line
-                x1="310"
-                y1="155"
-                x2="484"
-                y2="310"
-                stroke="#60A5FA"
-                strokeWidth="0.8"
-              />
-              <line
-                x1="136"
-                y1="310"
-                x2="236"
-                y2="465"
-                stroke="#60A5FA"
-                strokeWidth="0.8"
-              />
-              <line
-                x1="484"
-                y1="310"
-                x2="372"
-                y2="372"
-                stroke="#60A5FA"
-                strokeWidth="0.8"
-              />
-              <line
-                x1="310"
-                y1="310"
-                x2="422"
-                y2="236"
-                stroke="#60A5FA"
-                strokeWidth="0.8"
-              />
-              <line
-                x1="310"
-                y1="310"
-                x2="372"
-                y2="372"
-                stroke="#60A5FA"
-                strokeWidth="0.8"
-              />
-              <line
-                x1="310"
-                y1="310"
-                x2="310"
-                y2="155"
-                stroke="#06B6D4"
-                strokeWidth="0.6"
-                opacity="0.6"
-              />
-              <line
-                x1="310"
-                y1="310"
-                x2="136"
-                y2="310"
-                stroke="#06B6D4"
-                strokeWidth="0.6"
-                opacity="0.6"
-              />
-            </svg>
+                  {/* Clean CSS Keyframe definition for smooth, centered rotation */}
+                  <style>{`
+                    @keyframes perfectCentricSpin {
+                      from { transform: rotate(0deg); }
+                      to { transform: rotate(360deg); }
+                    }
+                    .stabilized-mesh-group {
+                      animation: perfectCentricSpin 24s linear infinite;
+                    }
+                  `}</style>
+                </defs>
+
+                {/* --- LAYER 1: Completely Static Radar Base --- */}
+                <circle
+                  cx="300"
+                  cy="300"
+                  r="180"
+                  fill="none"
+                  stroke="#1E40AF"
+                  strokeWidth="1"
+                  strokeDasharray="6 8"
+                  opacity="0.4"
+                />
+                <circle
+                  cx="300"
+                  cy="300"
+                  r="100"
+                  fill="none"
+                  stroke="#0284C7"
+                  strokeWidth="0.8"
+                  strokeDasharray="4 4"
+                  opacity="0.5"
+                />
+                <circle
+                  cx="300"
+                  cy="300"
+                  r="40"
+                  fill="none"
+                  stroke="#06B6D4"
+                  strokeWidth="1"
+                  opacity="0.3"
+                />
+
+                {/* --- ROTATING LAYER: Anchored securely to the center (300, 300) --- */}
+                <g
+                  className="stabilized-mesh-group"
+                  style={{ transformOrigin: "300px 300px" }}
+                >
+                  {/* --- Structural Network Beams (Lines) --- */}
+                  {/* Outer Hexagonal Perimeter Loop */}
+                  <line
+                    x1="300"
+                    y1="120"
+                    x2="456"
+                    y2="210"
+                    stroke="#60A5FA"
+                    strokeWidth="1.5"
+                    opacity="0.8"
+                  />
+                  <line
+                    x1="456"
+                    y1="210"
+                    x2="456"
+                    y2="390"
+                    stroke="#60A5FA"
+                    strokeWidth="1.5"
+                    opacity="0.8"
+                  />
+                  <line
+                    x1="456"
+                    y1="390"
+                    x2="300"
+                    y2="480"
+                    stroke="#60A5FA"
+                    strokeWidth="1.5"
+                    opacity="0.8"
+                  />
+                  <line
+                    x1="300"
+                    y1="480"
+                    x2="144"
+                    y2="390"
+                    stroke="#60A5FA"
+                    strokeWidth="1.5"
+                    opacity="0.8"
+                  />
+                  <line
+                    x1="144"
+                    y1="390"
+                    x2="144"
+                    y2="210"
+                    stroke="#60A5FA"
+                    strokeWidth="1.5"
+                    opacity="0.8"
+                  />
+                  <line
+                    x1="144"
+                    y1="210"
+                    x2="300"
+                    y2="120"
+                    stroke="#60A5FA"
+                    strokeWidth="1.5"
+                    opacity="0.8"
+                  />
+
+                  {/* Inner Symmetrical Triangulation Matrix */}
+                  <line
+                    x1="300"
+                    y1="120"
+                    x2="456"
+                    y2="390"
+                    stroke="#3b82f6"
+                    strokeWidth="1"
+                    strokeDasharray="3 3"
+                    opacity="0.5"
+                  />
+                  <line
+                    x1="456"
+                    y1="210"
+                    x2="144"
+                    y2="390"
+                    stroke="#3b82f6"
+                    strokeWidth="1"
+                    strokeDasharray="3 3"
+                    opacity="0.5"
+                  />
+                  <line
+                    x1="456"
+                    y1="390"
+                    x2="144"
+                    y2="210"
+                    stroke="#3b82f6"
+                    strokeWidth="1"
+                    strokeDasharray="3 3"
+                    opacity="0.5"
+                  />
+                  <line
+                    x1="300"
+                    y1="480"
+                    x2="144"
+                    y2="210"
+                    stroke="#3b82f6"
+                    strokeWidth="1"
+                    strokeDasharray="3 3"
+                    opacity="0.5"
+                  />
+                  <line
+                    x1="144"
+                    y1="390"
+                    x2="300"
+                    y2="120"
+                    stroke="#3b82f6"
+                    strokeWidth="1"
+                    strokeDasharray="3 3"
+                    opacity="0.5"
+                  />
+                  <line
+                    x1="300"
+                    y1="120"
+                    x2="300"
+                    y2="480"
+                    stroke="#3b82f6"
+                    strokeWidth="1"
+                    strokeDasharray="5 5"
+                    opacity="0.4"
+                  />
+
+                  {/* Core Axis Radial Lines */}
+                  <line
+                    x1="300"
+                    y1="300"
+                    x2="300"
+                    y2="120"
+                    stroke="#06B6D4"
+                    strokeWidth="1.2"
+                    opacity="0.7"
+                  />
+                  <line
+                    x1="300"
+                    y1="300"
+                    x2="456"
+                    y2="210"
+                    stroke="#06B6D4"
+                    strokeWidth="1.2"
+                    opacity="0.7"
+                  />
+                  <line
+                    x1="300"
+                    y1="300"
+                    x2="456"
+                    y2="390"
+                    stroke="#06B6D4"
+                    strokeWidth="1.2"
+                    opacity="0.7"
+                  />
+                  <line
+                    x1="300"
+                    y1="300"
+                    x2="300"
+                    y2="480"
+                    stroke="#06B6D4"
+                    strokeWidth="1.2"
+                    opacity="0.7"
+                  />
+                  <line
+                    x1="300"
+                    y1="300"
+                    x2="144"
+                    y2="390"
+                    stroke="#06B6D4"
+                    strokeWidth="1.2"
+                    opacity="0.7"
+                  />
+                  <line
+                    x1="300"
+                    y1="300"
+                    x2="144"
+                    y2="210"
+                    stroke="#06B6D4"
+                    strokeWidth="1.2"
+                    opacity="0.7"
+                  />
+
+                  {/* --- Data Intersection Nodes --- */}
+                  {/* Outer Vertex Nodes */}
+                  <circle
+                    cx="300"
+                    cy="120"
+                    r="6"
+                    fill="#60A5FA"
+                    filter="url(#glow)"
+                  />
+                  <circle cx="300" cy="120" r="2.5" fill="#FFFFFF" />
+
+                  <circle
+                    cx="456"
+                    cy="210"
+                    r="5"
+                    fill="#38BDF8"
+                    filter="url(#glow)"
+                  />
+                  <circle cx="456" cy="210" r="2" fill="#FFFFFF" />
+
+                  <circle
+                    cx="456"
+                    cy="390"
+                    r="7"
+                    fill="#60A5FA"
+                    filter="url(#glow)"
+                  />
+                  <circle cx="456" cy="390" r="3" fill="#FFFFFF" />
+
+                  <circle
+                    cx="300"
+                    cy="480"
+                    r="5"
+                    fill="#38BDF8"
+                    filter="url(#glow)"
+                  />
+                  <circle cx="300" cy="480" r="2" fill="#FFFFFF" />
+
+                  <circle
+                    cx="144"
+                    cy="390"
+                    r="6"
+                    fill="#60A5FA"
+                    filter="url(#glow)"
+                  />
+                  <circle cx="144" cy="390" r="2.5" fill="#FFFFFF" />
+
+                  <circle
+                    cx="144"
+                    cy="210"
+                    r="4"
+                    fill="#38BDF8"
+                    filter="url(#glow)"
+                  />
+                  <circle cx="144" cy="210" r="1.5" fill="#FFFFFF" />
+
+                  {/* Intermediate Mesh Infrastructure Nodes */}
+                  <circle
+                    cx="378"
+                    cy="255"
+                    r="3"
+                    fill="#06B6D4"
+                    opacity="0.9"
+                  />
+                  <circle
+                    cx="378"
+                    cy="345"
+                    r="3"
+                    fill="#06B6D4"
+                    opacity="0.9"
+                  />
+                  <circle
+                    cx="222"
+                    cy="345"
+                    r="3"
+                    fill="#06B6D4"
+                    opacity="0.9"
+                  />
+                  <circle
+                    cx="222"
+                    cy="255"
+                    r="3"
+                    fill="#06B6D4"
+                    opacity="0.9"
+                  />
+                </g>
+
+                {/* --- LAYER 3: Core Center Node (Kept outside the rotating group so it stays completely still) --- */}
+                <circle cx="300" cy="300" r="24" fill="url(#coreGlow)" />
+                <circle
+                  cx="300"
+                  cy="300"
+                  r="6"
+                  fill="#38BDF8"
+                  filter="url(#glow)"
+                />
+                <circle cx="300" cy="300" r="2" fill="#FFFFFF" />
+              </svg>
+            </div>
           </div>
         </div>
       </div>

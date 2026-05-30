@@ -7,7 +7,7 @@ export const industriesStyles = {
   pillLine: "flex items-center gap-2.5 mb-2",
   pillLineBar: "w-5.5 h-0.5 bg-[#2563EB] rounded-sm",
   pillText:
-    "text-xs font-bold font-inter text-[#60A5FA] tracking-widest uppercase",
+    "text-[14px] font-bold font-inter text-blue-600 tracking-widest uppercase",
   mainHeading:
     "font-syne font-extrabold text-3xl sm:text-4xl md:text-[44px] text-black tracking-tighter leading-[1.05] mt-4",
   subHeading:
@@ -19,5 +19,5 @@ export const industriesStyles = {
     "w-10.5 h-10.5 rounded-[11px] bg-white border border-slate-200 group-hover:border-blue-600 flex items-center justify-center text-lg shrink-0 transition-all duration-200",
   cardTitle:
     "font-syne font-bold text-[15px] text-black tracking-tight group-hover:text-blue-600 transition-colors duration-200",
-  cardDesc: "text-xs text-slate-500 font-inter leading-[1.75]",
+  cardDesc: "text-xs text-black font-inter leading-[1.75]",
 };

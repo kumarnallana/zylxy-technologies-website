@@ -11,7 +11,12 @@ export default function FaqSection() {
     <section id="faq-section" className={faqStyles.section}>
       <div className={faqStyles.wrapper}>
         <div className={faqStyles.headerContainer}>
-          <span className={faqStyles.pillText}>{faqData.header.pillText}</span>
+          <div className={faqStyles.pillWrapper}>
+            <div className={faqStyles.pillLineBar} />
+            <span className={faqStyles.pillText}>
+              {faqData.header.pillText}
+            </span>
+          </div>
           <h2 className={faqStyles.mainHeading}>
             {faqData.header.mainHeading}
           </h2>
@@ -49,7 +54,11 @@ export default function FaqSection() {
                     opacity: isOpen ? 1 : 0,
                   }}
                 >
-                  <p className={faqStyles.answerText}>{faq.a}</p>
+                  <p
+                    className={`${faqStyles.answerText} ${isOpen ? faqStyles.answerTextOpen : faqStyles.answerTextClosed}`}
+                  >
+                    {faq.a}
+                  </p>
                 </div>
               </div>
             );
