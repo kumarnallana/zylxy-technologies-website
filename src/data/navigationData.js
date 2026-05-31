@@ -9,7 +9,7 @@ export const NAVBAR_DATA = {
   brandSubtitle: "Technologies",
   menuItems: [
     { label: "Home", actionType: "scrollToTop", scrollable: true },
-    { label: "About", actionType: "none", scrollable: false },
+    { label: "Outcomes", actionType: "none", scrollable: false },
     { label: "Services", actionType: "scrollToServices", scrollable: true },
     { label: "Contact", actionType: "none", scrollable: false, suffix: "☎" },
   ],

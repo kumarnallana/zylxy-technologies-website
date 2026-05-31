@@ -54,7 +54,6 @@ export default function Hero() {
         <div className={heroStyles.rightColumn}>
           <div className={heroStyles.orbContainerWrapper}>
             <div className={heroStyles.orbContainer}>
-              {/* Static Ambient Radar Rings */}
               <div
                 className={heroStyles.orbRingOuter}
                 style={{ animationDelay: "0s" }}
@@ -69,21 +68,18 @@ export default function Hero() {
               />
               <div className={heroStyles.orbGlowCore} />
 
-              {/* Master SVG Canvas - Kept perfectly static to prevent external layout drift */}
               <svg
                 className={heroStyles.svgCanvas}
                 viewBox="0 0 600 600"
                 style={{ width: "100%", height: "100%" }}
               >
                 <defs>
-                  {/* Radial Core Glow Definition */}
                   <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
                     <stop offset="0%" stopColor="#38BDF8" stopOpacity="1" />
                     <stop offset="30%" stopColor="#0284C7" stopOpacity="0.5" />
                     <stop offset="100%" stopColor="#0369A1" stopOpacity="0" />
                   </radialGradient>
 
-                  {/* Node Pulse Glow Definition */}
                   <filter
                     id="glow"
                     x="-20%"
@@ -99,7 +95,6 @@ export default function Hero() {
                     />
                   </filter>
 
-                  {/* Clean CSS Keyframe definition for smooth, centered rotation */}
                   <style>{`
                     @keyframes perfectCentricSpin {
                       from { transform: rotate(0deg); }
@@ -111,7 +106,6 @@ export default function Hero() {
                   `}</style>
                 </defs>
 
-                {/* --- LAYER 1: Completely Static Radar Base --- */}
                 <circle
                   cx="300"
                   cy="300"
@@ -142,13 +136,10 @@ export default function Hero() {
                   opacity="0.3"
                 />
 
-                {/* --- ROTATING LAYER: Anchored securely to the center (300, 300) --- */}
                 <g
                   className="stabilized-mesh-group"
                   style={{ transformOrigin: "300px 300px" }}
                 >
-                  {/* --- Structural Network Beams (Lines) --- */}
-                  {/* Outer Hexagonal Perimeter Loop */}
                   <line
                     x1="300"
                     y1="120"
@@ -204,7 +195,6 @@ export default function Hero() {
                     opacity="0.8"
                   />
 
-                  {/* Inner Symmetrical Triangulation Matrix */}
                   <line
                     x1="300"
                     y1="120"
@@ -266,7 +256,6 @@ export default function Hero() {
                     opacity="0.4"
                   />
 
-                  {/* Core Axis Radial Lines */}
                   <line
                     x1="300"
                     y1="300"
@@ -322,8 +311,6 @@ export default function Hero() {
                     opacity="0.7"
                   />
 
-                  {/* --- Data Intersection Nodes --- */}
-                  {/* Outer Vertex Nodes */}
                   <circle
                     cx="300"
                     cy="120"
@@ -378,7 +365,6 @@ export default function Hero() {
                   />
                   <circle cx="144" cy="210" r="1.5" fill="#FFFFFF" />
 
-                  {/* Intermediate Mesh Infrastructure Nodes */}
                   <circle
                     cx="378"
                     cy="255"
@@ -409,7 +395,6 @@ export default function Hero() {
                   />
                 </g>
 
-                {/* --- LAYER 3: Core Center Node (Kept outside the rotating group so it stays completely still) --- */}
                 <circle cx="300" cy="300" r="24" fill="url(#coreGlow)" />
                 <circle
                   cx="300"

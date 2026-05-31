@@ -2,13 +2,101 @@
 
 import { NAVBAR_DATA } from "@/data/navigationData";
 import { navbarStyles } from "@/styles/navbar/navbar.dark";
+import { usePathname, useRouter } from "next/navigation";
+import MobileMenu from "./MobileMenu";
 
 export default function Navbar({ onScrollToServices }) {
+  const router = useRouter();
+  const pathname = usePathname();
+
   const handleNavigation = (item) => {
     if (item.actionType === "scrollToTop") {
+      if (pathname !== "/") {
+        router.push("/");
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      return;
+    }
+
+    if (
+      item.actionType === "scrollToServices" ||
+      item.label?.toLowerCase() === "services"
+    ) {
+      if (pathname !== "/") {
+        router.push("/#services-section");
+      } else {
+        if (onScrollToServices) onScrollToServices();
+        else {
+          const elem = document.getElementById("services-section");
+          if (elem)
+            window.scrollTo({ top: elem.offsetTop - 85, behavior: "smooth" });
+        }
+      }
+      return;
+    }
+
+    if (
+      item.actionType === "scrollToOutcomes" ||
+      item.label?.toLowerCase() === "outcomes" ||
+      item.label?.toLowerCase() === "case studies"
+    ) {
+      if (pathname !== "/") {
+        router.push("/#case-studies-section");
+      } else {
+        const elem =
+          document.getElementById("case-studies-section") ||
+          document.getElementById("outcomes-section");
+        if (elem) {
+          window.scrollTo({ top: elem.offsetTop - 85, behavior: "smooth" });
+        } else if (item.href) {
+          router.push(item.href);
+        }
+      }
+      return;
+    }
+
+    if (
+      item.actionType === "scrollToContact" ||
+      item.label?.toLowerCase() === "contact"
+    ) {
+      if (pathname !== "/") {
+        router.push("/#leadgen-section");
+      } else {
+        const elem = document.getElementById("leadgen-section");
+        if (elem)
+          window.scrollTo({ top: elem.offsetTop - 85, behavior: "smooth" });
+      }
+      return;
+    }
+
+    if (item.href) {
+      if (item.href.startsWith("/#") || item.href.startsWith("#")) {
+        const targetId = item.href.replace(/.*#/, "");
+
+        if (pathname !== "/") {
+          router.push(item.href);
+        } else {
+          const elem = document.getElementById(targetId);
+          if (elem) {
+            window.scrollTo({
+              top: elem.offsetTop - 85,
+              behavior: "smooth",
+            });
+            window.history.pushState(null, "", `#${targetId}`);
+          }
+        }
+      } else {
+        router.push(item.href);
+      }
+    }
+  };
+
+  const handleLogoClick = () => {
+    if (pathname !== "/") {
+      router.push("/");
+    } else {
       window.scrollTo({ top: 0, behavior: "smooth" });
-    } else if (item.actionType === "scrollToServices" && onScrollToServices) {
-      onScrollToServices();
     }
   };
 
@@ -17,12 +105,13 @@ export default function Navbar({ onScrollToServices }) {
       <div className={navbarStyles.innerWrapper}>
         <div
           className={navbarStyles.logoSection}
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          onClick={handleLogoClick}
+          style={{ cursor: "pointer" }}
         >
           <div className={navbarStyles.logoBox}>
             <img
               src="/ZylxyLogo.png"
-              alt={NAVBAR_DATA.logoAlt}
+              alt={NAVBAR_DATA.logoAlt || "Zylxy Logo"}
               className={navbarStyles.logoImage}
             />
           </div>
@@ -36,7 +125,7 @@ export default function Navbar({ onScrollToServices }) {
           </div>
         </div>
 
-        <div className={navbarStyles.menuList}>
+        <div className={`${navbarStyles.menuList} hidden lg:flex`}>
           {NAVBAR_DATA.menuItems.map((item, index) => (
             <button
               key={index}
@@ -52,14 +141,26 @@ export default function Navbar({ onScrollToServices }) {
           ))}
         </div>
 
-        <div className={navbarStyles.buttonGroup}>
-          <button className={navbarStyles.primaryBtn}>
-            {NAVBAR_DATA.buttons[0].label}
-          </button>
-          <button className={navbarStyles.outlineBtn}>
-            {NAVBAR_DATA.buttons[1].label}
-          </button>
+        <div className={`${navbarStyles.buttonGroup} hidden lg:flex`}>
+          {NAVBAR_DATA.buttons?.[0] && (
+            <button
+              className={navbarStyles.primaryBtn}
+              onClick={() => handleNavigation(NAVBAR_DATA.buttons[0])}
+            >
+              {NAVBAR_DATA.buttons[0].label}
+            </button>
+          )}
+          {NAVBAR_DATA.buttons?.[1] && (
+            <button
+              className={navbarStyles.outlineBtn}
+              onClick={() => handleNavigation(NAVBAR_DATA.buttons[1])}
+            >
+              {NAVBAR_DATA.buttons[1].label}
+            </button>
+          )}
         </div>
+
+        <MobileMenu onScrollToServices={onScrollToServices} />
       </div>
     </nav>
   );

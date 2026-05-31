@@ -1,6 +1,8 @@
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Navbar from "@/components/layout/Navbar";
+import FaqSection from "@/components/sections/FAQ";
 import FooterSection from "@/components/sections/FooterSection";
+import LeadGenSection from "@/components/sections/LeadGen";
 import "@/styles/animations.css";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
@@ -31,6 +33,8 @@ export default function RootLayout({ children }) {
         <AnnouncementBar />
         <Navbar />
         {children}
+        <FaqSection />
+        <LeadGenSection />
         <FooterSection />
       </body>
     </html>

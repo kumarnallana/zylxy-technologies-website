@@ -27,7 +27,6 @@ export default function ServicesPage() {
       <div className={servicesStyles.wrapper}>
         <div className={servicesStyles.headerRow}>
           <div>
-            {/* Exactly matches the solid bar layout config */}
             <div className={servicesStyles.pillLine}>
               <div className={servicesStyles.pillLineBar} />
               <span className={servicesStyles.pillText}>What we do</span>
@@ -89,13 +88,13 @@ export default function ServicesPage() {
   );
 }
 
-// React hover state removed completely; handled natively by Tailwind CSS modifiers
+// Cleanly handles active/inactive contrast states using Tailwind classes
 function TabBtn({ label, count, active, onClick }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`${servicesStyles.tabBtn} ${
+      className={`group ${servicesStyles.tabBtn} ${
         active ? servicesStyles.tabBtnActive : servicesStyles.tabBtnInactive
       }`}
     >
@@ -114,20 +113,11 @@ function TabBtn({ label, count, active, onClick }) {
 }
 
 function ServiceCard({ s, onClick }) {
-  const [h, setH] = useState(false);
-
   return (
-    <div
-      onClick={onClick}
-      onMouseEnter={() => setH(true)}
-      onMouseLeave={() => setH(false)}
-      className={servicesStyles.card}
-      style={h ? { borderColor: `${s.accent}55` } : undefined}
-    >
+    <div onClick={onClick} className={servicesStyles.card}>
       <div className={servicesStyles.cardTopRow}>
-        {/* Dynamic theme mappings remain inline seamlessly */}
         <div
-          className={servicesStyles.iconBox}
+          className={`${servicesStyles.iconBox} group-hover:bg-white`}
           style={{
             background: s.accentBg,
             borderColor: `${s.accent}22`,
@@ -137,7 +127,7 @@ function ServiceCard({ s, onClick }) {
           {s.icon}
         </div>
 
-        {/* Arrow visibility transition handled strictly through parent group hover configurations */}
+        {/* Visibility governed natively by group-hover opacity logic in the styles file */}
         <span className={servicesStyles.cardArrow} style={{ color: s.accent }}>
           →
         </span>
