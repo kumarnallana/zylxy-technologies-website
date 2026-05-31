@@ -126,9 +126,13 @@ export default async function ServiceDetailPage({ params }) {
                 </div>
 
                 <div className={servicesStyles.detailFooterActions}>
-                  <button className={servicesStyles.consultBtn}>
+                  <Link
+                    href="/#leadgen-section"
+                    className={servicesStyles.consultBtn}
+                    style={{ display: "inline-block", textAlign: "center" }}
+                  >
                     Book a Free Consultation
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

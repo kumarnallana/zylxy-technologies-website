@@ -58,7 +58,8 @@ export default function Navbar({ onScrollToServices }) {
 
     if (
       item.actionType === "scrollToContact" ||
-      item.label?.toLowerCase() === "contact"
+      item.label?.toLowerCase() === "contact" ||
+      item.label?.toLowerCase().includes("consultation")
     ) {
       if (pathname !== "/") {
         router.push("/#leadgen-section");
@@ -125,7 +126,7 @@ export default function Navbar({ onScrollToServices }) {
           </div>
         </div>
 
-        <div className={`${navbarStyles.menuList} hidden lg:flex`}>
+        <div className={navbarStyles.menuList}>
           {NAVBAR_DATA.menuItems.map((item, index) => (
             <button
               key={index}
@@ -141,7 +142,7 @@ export default function Navbar({ onScrollToServices }) {
           ))}
         </div>
 
-        <div className={`${navbarStyles.buttonGroup} hidden lg:flex`}>
+        <div className={`${navbarStyles.buttonGroup} hidden md:flex`}>
           {NAVBAR_DATA.buttons?.[0] && (
             <button
               className={navbarStyles.primaryBtn}
@@ -160,7 +161,9 @@ export default function Navbar({ onScrollToServices }) {
           )}
         </div>
 
-        <MobileMenu onScrollToServices={onScrollToServices} />
+        <div className="flex md:hidden items-center">
+          <MobileMenu onScrollToServices={onScrollToServices} />
+        </div>
       </div>
     </nav>
   );

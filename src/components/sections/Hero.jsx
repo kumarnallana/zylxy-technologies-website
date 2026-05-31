@@ -2,8 +2,34 @@
 
 import { heroData } from "@/data/heroData";
 import { heroStyles } from "@/styles/sections/hero";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Hero() {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleConsultClick = () => {
+    if (pathname !== "/") {
+      router.push("/#leadgen-section");
+    } else {
+      const elem = document.getElementById("leadgen-section");
+      if (elem) {
+        window.scrollTo({ top: elem.offsetTop - 85, behavior: "smooth" });
+      }
+    }
+  };
+
+  const handleExploreClick = () => {
+    if (pathname !== "/") {
+      router.push("/#services-section");
+    } else {
+      const elem = document.getElementById("services-section");
+      if (elem) {
+        window.scrollTo({ top: elem.offsetTop - 85, behavior: "smooth" });
+      }
+    }
+  };
+
   return (
     <section className={heroStyles.section}>
       <div className={heroStyles.atmosphereGlow} />
@@ -32,10 +58,16 @@ export default function Hero() {
           </p>
 
           <div className={heroStyles.btnGroup}>
-            <button className={heroStyles.primaryBtn}>
+            <button
+              onClick={handleConsultClick}
+              className={heroStyles.primaryBtn}
+            >
               {heroData.buttons.primary}
             </button>
-            <button className={heroStyles.secondaryBtn}>
+            <button
+              onClick={handleExploreClick}
+              className={heroStyles.secondaryBtn}
+            >
               {heroData.buttons.secondary}
             </button>
           </div>

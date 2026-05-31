@@ -211,7 +211,7 @@ export const servicesData = {
       accent: "#C1392B",
       accentBg: "#FBF0EF",
       image:
-        "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&q=80",
+        "https://images.unsplash.com/photo-1544531586-fde5298cdd40?w=1200&q=80",
       detailDesc:
         "We've trained over 1,000 students across design, development, and marketing disciplines. Every programme is built around industry tools, real briefs, and a clear path to employment or freelancing.",
       features: [

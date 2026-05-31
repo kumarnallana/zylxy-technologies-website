@@ -2,12 +2,24 @@
 
 import { servicesData } from "@/data/servicesData";
 import { servicesStyles } from "@/styles/sections/services";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function ServicesPage() {
   const [activeTab, setActiveTab] = useState("all");
   const router = useRouter();
+  const pathname = usePathname();
+
+  const handleConsultClick = () => {
+    if (pathname !== "/") {
+      router.push("/#leadgen-section");
+    } else {
+      const elem = document.getElementById("leadgen-section");
+      if (elem) {
+        window.scrollTo({ top: elem.offsetTop - 85, behavior: "smooth" });
+      }
+    }
+  };
 
   const filteredServices =
     activeTab.toLowerCase().trim() === "all"
@@ -79,7 +91,11 @@ export default function ServicesPage() {
         </div>
 
         <div className={servicesStyles.btnRow}>
-          <button type="button" className={servicesStyles.consultBtn}>
+          <button
+            type="button"
+            onClick={handleConsultClick}
+            className={servicesStyles.consultBtn}
+          >
             Book a Free Consultation
           </button>
         </div>
@@ -88,7 +104,6 @@ export default function ServicesPage() {
   );
 }
 
-// Cleanly handles active/inactive contrast states using Tailwind classes
 function TabBtn({ label, count, active, onClick }) {
   return (
     <button
@@ -127,7 +142,6 @@ function ServiceCard({ s, onClick }) {
           {s.icon}
         </div>
 
-        {/* Visibility governed natively by group-hover opacity logic in the styles file */}
         <span className={servicesStyles.cardArrow} style={{ color: s.accent }}>
           →
         </span>

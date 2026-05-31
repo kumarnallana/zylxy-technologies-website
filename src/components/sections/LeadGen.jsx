@@ -13,12 +13,53 @@ export default function LeadGenSection() {
     message: "",
   });
   const [sent, setSent] = useState(false);
+  const [submittedName, setSubmittedName] = useState("");
+  const [submittedEmail, setSubmittedEmail] = useState("");
   const [focused, setFocused] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
-  const handleSubmit = () => {
-    if (form.name && form.email) setSent(true);
+  const handleSubmit = async () => {
+    if (!form.name || !form.email || !form.phone || !form.service) {
+      setError("Name, Email, Phone, and Service are required.");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/lead", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to submit form");
+      }
+
+      setSubmittedName(form.name);
+      setSubmittedEmail(form.email);
+      setSent(true);
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        service: "",
+        message: "",
+      });
+    } catch (err) {
+      setError(err.message || "An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const cleanPillText = leadGenData.header.pillText.replace(/^[-\s]+/, "");
@@ -93,7 +134,7 @@ export default function LeadGenSection() {
                       : leadGenStyles.label
                   }
                 >
-                  Phone Number
+                  Phone Number *
                 </label>
                 <input
                   type="tel"
@@ -114,7 +155,7 @@ export default function LeadGenSection() {
                       : leadGenStyles.label
                   }
                 >
-                  Service Needed
+                  Service Needed *
                 </label>
                 <select
                   value={form.service}
@@ -178,11 +219,27 @@ export default function LeadGenSection() {
               <button
                 type="button"
                 onClick={handleSubmit}
+                disabled={loading}
                 className={leadGenStyles.submitBtn}
+                style={{
+                  opacity: loading ? 0.6 : 1,
+                  cursor: loading ? "not-allowed" : "pointer",
+                }}
               >
-                Send My Request →
+                {loading ? "Sending..." : "Send My Request →"}
               </button>
             </div>
+            {error && (
+              <div
+                style={{
+                  color: "#ff6b6b",
+                  marginTop: "12px",
+                  fontSize: "14px",
+                }}
+              >
+                {error}
+              </div>
+            )}
           </div>
         ) : (
           <div className={leadGenStyles.successCard}>
@@ -191,8 +248,8 @@ export default function LeadGenSection() {
               We've received your request.
             </h3>
             <p className={leadGenStyles.successText}>
-              Thank you, {form.name}. Our team will reach out to {form.email}{" "}
-              within 24 hours.
+              Thank you, {submittedName}. Our team will reach out to{" "}
+              {submittedEmail} within 24 hours.
             </p>
           </div>
         )}
