@@ -8,59 +8,110 @@ console.log('══════════════════════�
 console.log('');
 
 // ─────────────────────────────────────────────────────────────────
-// PATHS
-// On Hostinger, the app tree is:
-//   /home/u990914603/domains/zylxytech.com/
-//     nodejs/          ← Passenger app root (PassengerAppRoot)
-//       scripts/       ← this file lives here
-//       .next/static/  ← Next.js build output chunks
-//     public_html/     ← LiteSpeed's document root (serves static files)
-//       _next/static/  ← WE MUST COPY HERE for fast LiteSpeed delivery
-//       .htaccess
+// ARCHITECTURE REFERENCE
+// On Hostinger, the directory tree is:
 //
-// CRITICAL: If static assets stay in nodejs/, every CSS/font/JS
-// request goes through Node.js/Passenger instead of LiteSpeed.
-// That is why the critical path was 9,488ms instead of <50ms.
+//   /home/u990914603/domains/zylxytech.com/
+//     nodejs/             ← PassengerAppRoot (Node.js serves page HTML)
+//       scripts/          ← this file lives here (__dirname)
+//       .next/static/     ← Next.js build output (chunks, fonts, CSS)
+//       public/           ← STALE LOCATION — must be cleaned every deploy
+//     public_html/        ← LiteSpeed's document root (ONLY path for static)
+//       _next/static/     ← WHERE WE COPY TO — LiteSpeed serves in <50ms
+//       .htaccess         ← Must explicitly exempt /_next/static from Passenger
+//
+// ROOT CAUSE OF 9,488ms CSS LOAD:
+//   Static assets were in nodejs/public/, not public_html/.
+//   LiteSpeed couldn't find them → forwarded to Passenger → 9,488ms.
+//   Fix: copy to public_html/_next/static + patch .htaccess.
 // ─────────────────────────────────────────────────────────────────
 
-const nextStaticDir      = path.join(__dirname, '..', '.next', 'static');
+const nextStaticDir       = path.join(__dirname, '..', '.next', 'static');
 
-// ✅ CORRECTED: target LiteSpeed's document root, not the nodejs/ folder
-const publicHtmlDir      = path.join(__dirname, '..', '..', 'public_html');
-const litespeedStaticDir = path.join(publicHtmlDir, '_next', 'static');
-const htaccessPath       = path.join(publicHtmlDir, '.htaccess');
+// ✅ CORRECT target: LiteSpeed's document root
+const publicHtmlDir       = path.join(__dirname, '..', '..', 'public_html');
+const litespeedStaticDir  = path.join(publicHtmlDir, '_next', 'static');
+const htaccessPath        = path.join(publicHtmlDir, '.htaccess');
+
+// ⚠️  STALE location from old deploys — must be wiped to prevent fallback inconsistency
+const staleStaticDir      = path.join(__dirname, '..', 'public', '_next');
 
 try {
 
-  // ─── STEP 1: Copy static chunks to public_html/_next/static ───────
-  console.log('📂 [Step 1] Copying static assets to LiteSpeed document root...');
+  // ─── STEP 1: Wipe stale nodejs/public/_next (concern #2 from audit) ──
+  console.log('🧹 [Step 1] Cleaning up stale static copy in nodejs/public/_next...');
+  if (fs.existsSync(staleStaticDir)) {
+    fs.rmSync(staleStaticDir, { recursive: true, force: true });
+    console.log('✅  Removed stale nodejs/public/_next — no fallback inconsistency possible');
+  } else {
+    console.log('✅  No stale copy found — clean slate');
+  }
+
+  // ─── STEP 2: Copy fresh chunks to public_html/_next/static ───────────
+  console.log('');
+  console.log('📂 [Step 2] Copying static assets to LiteSpeed document root...');
   if (fs.existsSync(nextStaticDir)) {
+    // Always wipe the target first — ensures no stale chunks from previous build
+    if (fs.existsSync(litespeedStaticDir)) {
+      fs.rmSync(litespeedStaticDir, { recursive: true, force: true });
+      console.log('    Cleared old public_html/_next/static (fresh copy incoming)');
+    }
     fs.mkdirSync(litespeedStaticDir, { recursive: true });
     fs.cpSync(nextStaticDir, litespeedStaticDir, { recursive: true });
     console.log('✅  Copied .next/static → public_html/_next/static');
-    console.log('    LiteSpeed will now serve CSS/JS/fonts in <50ms (not via Node.js)');
+    console.log('    LiteSpeed will now serve CSS/JS/fonts in <50ms (bypasses Node.js)');
   } else {
     console.warn('⚠️  .next/static not found — run `next build` first');
+    process.exit(1);
   }
 
-  // ─── STEP 2: Patch .htaccess ─────────────────────────────────────
+  // ─── STEP 3: Patch .htaccess ─────────────────────────────────────────
   console.log('');
-  console.log('🔧 [Step 2] Patching Hostinger .htaccess...');
+  console.log('🔧 [Step 3] Patching Hostinger .htaccess...');
 
   if (!fs.existsSync(htaccessPath)) {
-    console.warn(`⚠️  .htaccess not found at ${htaccessPath}. Skipping (normal in local dev).`);
+    console.warn(`⚠️  .htaccess not found at ${htaccessPath}.`);
+    console.warn('    This is normal in local dev. On Hostinger this file must exist.');
   } else {
     let content  = fs.readFileSync(htaccessPath, 'utf8');
     let modified = false;
 
-    // ── 2a. UV_THREADPOOL_SIZE ─────────────────────────────────────
+    // ── 3a. _next/static bypass rule (MUST be at the TOP, before Passenger rules)
+    // Concern #1 from audit: Passenger's catch-all can intercept /_next/static
+    // even when PassengerBaseURI / is set, if there is no explicit bypass rule.
+    // We INSERT this block BEFORE the PassengerAppRoot line so it takes priority.
+    // The rule: if URI starts with /_next/static/ → serve it directly, stop processing.
+    // No -f condition: we don't need the file to exist for the bypass to work — 
+    // LiteSpeed's default 404 is better than a 503 from a crashed Passenger process.
+    const staticBypassMarker = '# zylxy:static-bypass';
+    if (!content.includes(staticBypassMarker)) {
+      const staticBypassBlock = `${staticBypassMarker}
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Bypass Passenger entirely for /_next/static/* requests.
+  # LiteSpeed serves these files directly from public_html/_next/static/
+  # This MUST appear before PassengerBaseURI rules.
+  RewriteRule ^_next/static/ - [L]
+  RewriteRule ^_next/image - [L]
+</IfModule>
+
+`;
+      // Prepend — so this runs BEFORE the Passenger configuration
+      content  = staticBypassBlock + content;
+      modified = true;
+      console.log('✅  Prepended /_next/static bypass rule (before Passenger catch-all)');
+    } else {
+      console.log('✅  Static bypass rule already present');
+    }
+
+    // ── 3b. UV_THREADPOOL_SIZE ────────────────────────────────────────
     if (!content.includes('UV_THREADPOOL_SIZE')) {
       content  += '\nSetEnv UV_THREADPOOL_SIZE 2\n';
       modified  = true;
       console.log('✅  Added UV_THREADPOOL_SIZE 2');
     }
 
-    // ── 2b. --v8-pool-size=1 ───────────────────────────────────────
+    // ── 3c. --v8-pool-size=1 ─────────────────────────────────────────
     if (content.includes('NODE_OPTIONS') && !content.includes('--v8-pool-size=1')) {
       content  = content.replace(
         /SetEnv NODE_OPTIONS "([^"]+)"/,
@@ -70,12 +121,12 @@ try {
       console.log('✅  Injected --v8-pool-size=1 into NODE_OPTIONS');
     }
 
-    // ── 2c. Cache-Control headers ──────────────────────────────────
+    // ── 3d. Cache-Control headers ─────────────────────────────────────
     if (!content.includes('Header set Cache-Control')) {
       const cacheBlock = `
 # ─── Static Asset Caching (injected by setup-passenger.js) ───────
 <IfModule mod_headers.c>
-  # Next.js chunk files are content-hashed — safe to cache forever
+  # Next.js chunks are content-hashed — safe to cache for 1 year
   <FilesMatch "\\.(js|css|woff|woff2|avif|webp|jpg|jpeg|png|svg|ico)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
@@ -90,25 +141,6 @@ try {
       console.log('✅  Injected Cache-Control: immutable headers (1-year TTL)');
     }
 
-    // ── 2d. Serve _next/static directly from public_html ──────────
-    // This RewriteRule ensures requests for /_next/static/* are served
-    // by LiteSpeed from public_html/_next/static, bypassing Passenger.
-    if (!content.includes('RewriteRule ^_next/static')) {
-      const staticRoute = `
-# ─── Serve _next/static directly via LiteSpeed (bypass Passenger) ──
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  # Serve pre-copied static assets from public_html directly
-  RewriteCond %{REQUEST_URI} ^/_next/static/
-  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f
-  RewriteRule ^ - [L]
-</IfModule>
-`;
-      content  += staticRoute;
-      modified  = true;
-      console.log('✅  Added RewriteRule to bypass Passenger for static assets');
-    }
-
     if (modified) {
       fs.writeFileSync(htaccessPath, content, 'utf8');
       console.log('');
@@ -118,12 +150,37 @@ try {
     }
   }
 
+  // ─── STEP 4: Verify the copy succeeded ───────────────────────────────
+  console.log('');
+  console.log('🔍 [Step 4] Verifying deployment integrity...');
+  const verifyDirs = ['chunks', 'css', 'media'];
+  let allGood = true;
+  for (const dir of verifyDirs) {
+    const fullPath = path.join(litespeedStaticDir, dir);
+    if (fs.existsSync(fullPath)) {
+      const count = fs.readdirSync(fullPath).length;
+      console.log(`✅  public_html/_next/static/${dir}/ — ${count} files`);
+    } else {
+      console.warn(`⚠️  public_html/_next/static/${dir}/ — NOT FOUND`);
+      allGood = false;
+    }
+  }
+
+  if (!allGood) {
+    console.error('');
+    console.error('❌  Verification failed — some static directories are missing.');
+    console.error('    CSS/JS may still be served through Passenger. Check the build output.');
+    process.exit(1);
+  }
+
   console.log('');
   console.log('═══════════════════════════════════════════════════');
-  console.log('  ✅  DEPLOYMENT SETUP COMPLETE');
-  console.log('      CSS/fonts → LiteSpeed (<50ms)');
-  console.log('      Node.js   → Page rendering only');
-  console.log('      Cache-TTL → 1 year (immutable)');
+  console.log('  ✅  DEPLOYMENT SETUP COMPLETE & VERIFIED');
+  console.log('      CSS/JS/Fonts → LiteSpeed direct (<50ms)');
+  console.log('      Node.js      → HTML page rendering only');
+  console.log('      Cache-TTL    → 1 year immutable');
+  console.log('      Stale files  → Wiped from nodejs/public/');
+  console.log('      Bypass rule  → Prepended to .htaccess');
   console.log('═══════════════════════════════════════════════════');
   console.log('');
 
