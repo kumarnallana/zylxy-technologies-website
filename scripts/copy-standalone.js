@@ -21,26 +21,70 @@ try {
     console.log('✅ Copied .next/static/ folder to standalone');
   }
 
-  // --- HOSTINGER LITESPEED FIX ---
-  // Hostinger's Litespeed server intercepts static file requests and looks for them in public_html.
-  // Since the Node app lives in a parallel folder (nodejs), Litespeed returns 404 for CSS/JS.
-  // Fix: We automatically copy the static assets directly into public_html during the CI build!
-  const publicHtmlDir = path.join(__dirname, '..', '..', 'public_html');
-  
-  if (fs.existsSync(publicHtmlDir)) {
-    console.log(`\n🌐 Hostinger environment detected! Syncing static files to public_html...`);
+  // --- HOSTINGER LITESPEED / HCDN STATIC ASSET SYNC ---
+  // Hostinger's LiteSpeed web server and Hostinger CDN (hcdn) serve static assets (_next/static/*)
+  // directly from the public_html directory.
+  // Because Hostinger CI builds in .builds/last-source or nodejs, we dynamically find public_html
+  // and sync all static chunks directly into public_html/_next/static.
+
+  function findPublicHtml(startDir) {
+    let current = path.resolve(startDir);
+    for (let i = 0; i < 6; i++) {
+      if (path.basename(current) === 'public_html') {
+        return current;
+      }
+      const checkPath = path.join(current, 'public_html');
+      if (fs.existsSync(checkPath) && fs.statSync(checkPath).isDirectory()) {
+        return checkPath;
+      }
+      const parent = path.dirname(current);
+      if (parent === current) break;
+      current = parent;
+    }
+    // Fallback for Hostinger domain path
+    const hostingerPath = '/home/u990914603/domains/zylxytech.com/public_html';
+    if (fs.existsSync(hostingerPath)) {
+      return hostingerPath;
+    }
+    return null;
+  }
+
+  const publicHtmlDir = findPublicHtml(__dirname) || findPublicHtml(process.cwd());
+
+  if (publicHtmlDir && fs.existsSync(publicHtmlDir)) {
+    console.log(`\n🌐 Hostinger environment detected! Syncing static files to: ${publicHtmlDir}`);
     
-    // Copy .next/static to public_html/_next/static
+    // Copy .next/static to public_html/_next/static (without deleting existing chunks to support cached HTML)
     const targetNextStatic = path.join(publicHtmlDir, '_next', 'static');
     fs.mkdirSync(targetNextStatic, { recursive: true });
-    fs.cpSync(staticDir, targetNextStatic, { recursive: true });
-    console.log('✅ Synced .next/static -> public_html/_next/static');
+    if (fs.existsSync(staticDir)) {
+      fs.cpSync(staticDir, targetNextStatic, { recursive: true });
+      console.log('✅ Synced .next/static -> public_html/_next/static');
+    }
 
     // Copy public/* to public_html/
-    fs.cpSync(publicDir, publicHtmlDir, { recursive: true });
-    console.log('✅ Synced public/ -> public_html/');
+    if (fs.existsSync(publicDir)) {
+      fs.cpSync(publicDir, publicHtmlDir, { recursive: true });
+      console.log('✅ Synced public/ -> public_html/');
+    }
+
+    // Also check if /home/u990914603/domains/zylxytech.com/nodejs exists and copy there if needed
+    const nodejsDir = '/home/u990914603/domains/zylxytech.com/nodejs';
+    if (fs.existsSync(nodejsDir) && nodejsDir !== path.resolve(__dirname, '..')) {
+      const nodejsNextStatic = path.join(nodejsDir, '.next', 'static');
+      const nodejsPublic = path.join(nodejsDir, 'public');
+      fs.mkdirSync(nodejsNextStatic, { recursive: true });
+      if (fs.existsSync(staticDir)) {
+        fs.cpSync(staticDir, nodejsNextStatic, { recursive: true });
+        console.log('✅ Synced .next/static -> nodejs/.next/static');
+      }
+      if (fs.existsSync(publicDir)) {
+        fs.cpSync(publicDir, nodejsPublic, { recursive: true });
+        console.log('✅ Synced public/ -> nodejs/public');
+      }
+    }
   } else {
-    console.log(`\n⚠️ public_html not found at ${publicHtmlDir}. Skipping Litespeed static sync.`);
+    console.log(`\n⚠️ public_html directory not found. Skipping Litespeed static sync.`);
   }
 
   console.log('\n🎉 Post-build asset copying complete!');
