@@ -210,5 +210,8 @@ Recommended deployment platforms:
 ---
 
 ## Author
-
 Zylxy Technologies
+
+## Developer
+Name: Sasi Kumar Nallana
+dev_url: nallana-sasi-kumar-vercel.app
