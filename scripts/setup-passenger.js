@@ -98,31 +98,43 @@ try {
     let modified = false;
 
     // ── 3a. _next/static bypass rule (MUST be at the TOP, before Passenger rules)
-    // Concern #1 from audit: Passenger's catch-all can intercept /_next/static
-    // even when PassengerBaseURI / is set, if there is no explicit bypass rule.
-    // We INSERT this block BEFORE the PassengerAppRoot line so it takes priority.
-    // The rule: if URI starts with /_next/static/ → serve it directly, stop processing.
-    // No -f condition: we don't need the file to exist for the bypass to work — 
-    // LiteSpeed's default 404 is better than a 503 from a crashed Passenger process.
-    const staticBypassMarker = '# zylxy:static-bypass';
-    if (!content.includes(staticBypassMarker)) {
-      const staticBypassBlock = `${staticBypassMarker}
+    // v2: adds RewriteCond -f so ONLY files that actually exist in public_html
+    // get served by LiteSpeed. Missing files fall through to Passenger which
+    // serves them from nodejs/.next/static/ — eliminates all 404 chunk errors.
+    const staticBypassMarkerV1 = '# zylxy:static-bypass';
+    const staticBypassMarkerV2 = '# zylxy:static-bypass-v2';
+
+    if (!content.includes(staticBypassMarkerV2)) {
+      // Remove old v1 block if present (it lacked -f condition, caused 404s)
+      if (content.includes(staticBypassMarkerV1)) {
+        const v1Start = content.indexOf(staticBypassMarkerV1);
+        // Find the closing blank line after </IfModule>
+        const v1End = content.indexOf('</IfModule>', v1Start) + '</IfModule>'.length;
+        const afterV1 = content.slice(v1End).match(/^\n*/);
+        const skipLen = afterV1 ? afterV1[0].length : 0;
+        content = content.slice(0, v1Start) + content.slice(v1End + skipLen);
+        console.log('🔄  Removed old v1 bypass rule (upgrading to v2 with -f fallback)');
+        modified = true;
+      }
+
+      const staticBypassBlock = `${staticBypassMarkerV2}
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  # Bypass Passenger entirely for /_next/static/* requests.
-  # LiteSpeed serves these files directly from public_html/_next/static/
-  # This MUST appear before PassengerBaseURI rules.
+  # Serve /_next/static/* from public_html ONLY when the file exists there.
+  # If not found on disk, falls through to Passenger (nodejs/.next/static/).
+  # This prevents 404 errors for chunks that weren't copied during build.
+  RewriteCond %{REQUEST_FILENAME} -f
   RewriteRule ^_next/static/ - [L]
+  # Image optimization is always a dynamic route → always goes to Passenger.
   RewriteRule ^_next/image - [L]
 </IfModule>
 
 `;
-      // Prepend — so this runs BEFORE the Passenger configuration
       content  = staticBypassBlock + content;
       modified = true;
-      console.log('✅  Prepended /_next/static bypass rule (before Passenger catch-all)');
+      console.log('✅  Applied v2 static bypass rule with -f condition (Passenger fallback enabled)');
     } else {
-      console.log('✅  Static bypass rule already present');
+      console.log('✅  v2 static bypass rule already present — skipping');
     }
 
     // ── 3b. UV_THREADPOOL_SIZE ────────────────────────────────────────
