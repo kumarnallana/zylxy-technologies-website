@@ -1,5 +1,6 @@
-export const ServiceCard = ({ service }) => {
+export const ServiceCard = ({ service, headingLevel = 3 }) => {
   const Icon = service.icon;
+  const Heading = `h${headingLevel}`;
 
   return (
     <div
@@ -21,9 +22,9 @@ export const ServiceCard = ({ service }) => {
           </div>
         </div>
 
-        <h3 className="font-syne font-bold text-xl text-foreground mb-2 leading-snug tracking-tight group-hover:text-primary transition-colors duration-300">
+        <Heading className="font-syne font-bold text-xl text-foreground mb-2 leading-snug tracking-tight group-hover:text-primary transition-colors duration-300">
           {service.title}
-        </h3>
+        </Heading>
         
         <p className="text-sm text-muted-foreground font-inter leading-relaxed mb-6 line-clamp-3">
           {service.desc}

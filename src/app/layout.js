@@ -28,6 +28,12 @@ export const metadata = {
     default: "Zylxy Technologies | Engineered for Digital Scale",
     template: "%s | Zylxy Technologies",
   },
+  authors: [
+    {
+      name: "SasiKumar Nallana",
+      url: "https://sasi-kumar-nallana-portfolio.vercel.app",
+    },
+  ],
   description: "Enterprise software, AI solutions, and modern digital platforms built for scale.",
   openGraph: {
     title: "Zylxy Technologies | Engineered for Digital Scale",

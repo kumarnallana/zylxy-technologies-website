@@ -24,7 +24,7 @@ export const navbarStyles = {
   brandTitle:
     "font-sans font-extrabold text-xl text-white tracking-tight leading-none transition-colors duration-200 group-hover/logo:text-[#60A5FA]",
   brandSubtitle:
-    "font-sans text-[10px] font-bold text-white/40 tracking-[0.12em] uppercase leading-none transition-colors duration-200 group-hover/logo:text-white/60 max-w-[150px] truncate",
+    "font-sans text-[10px] font-bold text-white/65 tracking-[0.12em] uppercase leading-none transition-colors duration-200 group-hover/logo:text-white/80 max-w-[150px] truncate",
   menuList: "hidden md:flex items-center gap-1.5 h-full static",
   menuItemWrapper: "h-full flex items-center group/nav static",
   menuButton:

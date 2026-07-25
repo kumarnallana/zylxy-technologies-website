@@ -61,6 +61,26 @@ try {
     fs.cpSync(nextStaticDir, litespeedStaticDir, { recursive: true });
     console.log('✅  Copied .next/static → public_html/_next/static');
     console.log('    LiteSpeed will now serve CSS/JS/fonts in <50ms (bypasses Node.js)');
+
+    // ── STEP 2b: Write .htaccess into _next/ for immutable caching ────────
+    // next.config.mjs headers() only apply when Node.js handles the request.
+    // Since LiteSpeed serves static files directly, we need a .htaccess here.
+    // This fires even during Hostinger CI build — no dependency on live server.
+    const nextHtaccessPath = path.join(publicHtmlDir, '_next', '.htaccess');
+    const cacheHtaccess = `# Cache headers for Next.js static assets (written by setup-passenger.js)
+# All files here are content-hashed — safe to cache for 1 year.
+<IfModule mod_headers.c>
+  <FilesMatch "\\.(js|css|woff|woff2|avif|webp|jpg|jpeg|png|svg|ico|map)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 year"
+</IfModule>
+`;
+    fs.writeFileSync(nextHtaccessPath, cacheHtaccess, 'utf8');
+    console.log('✅  Wrote _next/.htaccess — Cache-Control: immutable on all static assets');
   } else {
     console.warn('⚠️  .next/static not found — run `next build` first');
     process.exit(1);

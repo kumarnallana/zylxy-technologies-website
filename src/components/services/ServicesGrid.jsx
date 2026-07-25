@@ -22,7 +22,8 @@ export const ServicesGrid = ({ activeTab, categories, services }) => {
               href={service.customRoute || `/services/${service.id}`}
               className="block h-full no-underline"
             >
-              <ServiceCard service={service} />
+              {/* headingLevel=2: no category h2 above in All mode, so card title must be h2 */}
+              <ServiceCard service={service} headingLevel={2} />
             </Link>
           </MotionItem>
         ))}
