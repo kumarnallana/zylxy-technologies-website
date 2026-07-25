@@ -109,7 +109,7 @@ export default function ClientLayoutWrapper({ children }) {
             id="main-content"
             tabIndex={-1}
             variants={pageVariants}
-            initial="pageHidden"
+            initial={false}
             animate="pageVisible"
             exit="pageExit"
             transition={{
