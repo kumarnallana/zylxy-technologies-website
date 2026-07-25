@@ -31,179 +31,161 @@ Official corporate website for Zylxy Technologies built using Next.js and modern
 
 ---
 
-## Project Structure
+## 📂 Project Structure
 
-```bash
-zylxytechnology-zylxy-technologies-website/
-├── README.md
+```text
+.
+├── .env.local
+├── .gitignore
 ├── AGENTS.md
+├── Ai-Agent-Execution-Rules.md
+├── build-hostinger.js
 ├── CLAUDE.md
+├── copy-standalone.js
+├── favicon_io/
+├── installed-packages.txt
 ├── jsconfig.json
+├── Long-Term-Engineering-Governance.md
 ├── next.config.mjs
+├── package-lock.json
 ├── package.json
 ├── postcss.config.mjs
-├── favicon_io/
-│   └── site.webmanifest
+├── PROMPT.md
+├── README.md
+├── refactor-forms.js
+├── scratch-hs-test.js
+├── server.js
+├── setup-passenger.js
+├── test-hubspot-api.js
+├── test-hubspot.js
+│
 ├── public/
-│   └── favicons/
-│       └── site.webmanifest
-├── src/
-│   ├── actions/
-│   │   └── leadActions.js
-│   ├── app/
-│   │   ├── globals.css
-│   │   ├── layout.js
-│   │   ├── not-found.jsx
-│   │   ├── page.js
-│   │   ├── api/
-│   │   │   ├── lead/
-│   │   │   │   └── route.js
-│   │   │   └── talent/
-│   │   │       └── route.js
-│   │   ├── careers/
-│   │   │   ├── explore-opportunities/
-│   │   │   │   └── page.jsx
-│   │   │   └── talent-acquisition/
-│   │   │       └── page.jsx
-│   │   ├── context/
-│   │   │   └── TalentEcosystemContext.jsx
-│   │   ├── hubspot/
-│   │   │   ├── layout.jsx
-│   │   │   ├── page.jsx
-│   │   │   ├── components/
-│   │   │   │   ├── features/
-│   │   │   │   │   ├── HubSpot-FeaturedProjects.jsx
-│   │   │   │   │   └── HubSpot-IntroFeature.jsx
-│   │   │   │   ├── forms/
-│   │   │   │   │   └── consultationForm.jsx
-│   │   │   │   ├── layout/
-│   │   │   │   │   ├── Hubspot-Footer.jsx
-│   │   │   │   │   └── HubSpot-Navbar.jsx
-│   │   │   │   └── sections/
-│   │   │   │       ├── Hubspot-faq.jsx
-│   │   │   │       ├── Hubspot-Hero.jsx
-│   │   │   │       ├── HubSpot-StatsBar.jsx
-│   │   │   │       ├── Hubspot-Testimonials.jsx
-│   │   │   │       └── HubSpot-WhyMe.jsx
-│   │   │   ├── data/
-│   │   │   │   ├── features/
-│   │   │   │   │   ├── FeaturedProjects.js
-│   │   │   │   │   └── introFeatures.js
-│   │   │   │   ├── forms/
-│   │   │   │   │   └── consultationFormData.js
-│   │   │   │   ├── layout/
-│   │   │   │   │   ├── footer.js
-│   │   │   │   │   └── navigation.js
-│   │   │   │   ├── packages/
-│   │   │   │   │   └── packageData.js
-│   │   │   │   └── sections/
-│   │   │   │       ├── consultation.js
-│   │   │   │       ├── faq.js
-│   │   │   │       ├── heroData.js
-│   │   │   │       ├── Hubspot-Data.js
-│   │   │   │       ├── statsData.js
-│   │   │   │       ├── testimonials.js
-│   │   │   │       └── why-me.js
-│   │   │   ├── packages/
-│   │   │   │   ├── HubSpot-PackagesOverview.jsx
-│   │   │   │   ├── layout.jsx
-│   │   │   │   └── [slug]/
-│   │   │   │       └── page.jsx
-│   │   │   └── styles/
-│   │   │       ├── features/
-│   │   │       │   ├── featuredProjects.js
-│   │   │       │   └── introFeature.js
-│   │   │       ├── forms/
-│   │   │       │   └── consultationFormStyles.js
-│   │   │       ├── layout/
-│   │   │       │   ├── footer.js
-│   │   │       │   └── navbar.js
-│   │   │       ├── packages/
-│   │   │       │   ├── packageDetail.js
-│   │   │       │   └── packagesOverview.js
-│   │   │       └── sections/
-│   │   │           ├── challenges.js
-│   │   │           ├── faq.js
-│   │   │           ├── hero.js
-│   │   │           ├── statsBar.js
-│   │   │           ├── testimonials.js
-│   │   │           └── whyMe.js
-│   │   └── services/
-│   │       ├── page.jsx
-│   │       └── [slug]/
-│   │           ├── layout.jsx
-│   │           └── page.jsx
-│   ├── components/
-│   │   ├── forms/
-│   │   │   └── LeadForm.jsx
-│   │   ├── layout/
-│   │   │   ├── AnnouncementBar.jsx
-│   │   │   ├── MobileMenu.jsx
-│   │   │   └── Navbar.jsx
-│   │   ├── sections/
-│   │   │   ├── CaseStudies.jsx
-│   │   │   ├── ClientsSection.jsx
-│   │   │   ├── FAQ.jsx
-│   │   │   ├── FooterSection.jsx
-│   │   │   ├── Hero.jsx
-│   │   │   ├── IndustriesSection.jsx
-│   │   │   ├── LeadershipSection.jsx
-│   │   │   ├── PortfolioShowcase.jsx
-│   │   │   └── Testimonials.jsx
-│   │   └── ui/
-│   │       ├── NoiseReveal.jsx
-│   │       ├── PageTransition.jsx
-│   │       ├── SmoothScrollLink.jsx
-│   │       └── Spinner.jsx
-│   ├── data/
-│   │   ├── forms/
-│   │   │   └── LeadFormData.js
-│   │   ├── layout/
-│   │   │   ├── footerData.js
-│   │   │   └── navigationData.js
-│   │   └── sections/
-│   │       ├── caseStudiesData.js
-│   │       ├── clientsData.js
-│   │       ├── explore-opportunities.js
-│   │       ├── faqData.js
-│   │       ├── heroData.js
-│   │       ├── industriesData.js
-│   │       ├── leadershipData.js
-│   │       ├── seoData.js
-│   │       ├── servicesData.js
-│   │       ├── talent-acquisition.js
-│   │       └── testimonialsData.js
-│   ├── lib/
-│   │   ├── metadata.js
-│   │   ├── routes.js
-│   │   ├── seo.js
-│   │   └── siteConfig.js
-│   ├── styles/
-│   │   ├── animations.css
-│   │   ├── explore-opportunities.js
-│   │   ├── talent-acquisition.js
-│   │   ├── forms/
-│   │   │   └── leadFormStyles.js
-│   │   ├── layout/
-│   │   │   ├── footer.js
-│   │   │   ├── navbar.dark.js
-│   │   │   └── navbar.mobile.js
-│   │   └── sections/
-│   │       ├── caseStudies.js
-│   │       ├── clients.js
-│   │       ├── faq.js
-│   │       ├── hero.js
-│   │       ├── industries.js
-│   │       ├── leadership.js
-│   │       ├── services.js
-│   │       └── testimonials.js
-│   └── utils/
-│       └── cn.js
-└── .github/
-    └── workflows/
-        └── nextjs.yml
+│   ├── fonts/
+│   ├── icons/
+│   ├── images/
+│   ├── videos/
+│   ├── robots.txt
+│   ├── sitemap.xml
+│   └── ...
+│
+├── scripts/
+│   └── ...
+│
+└── src/
+    ├── actions/
+    │   ├── ai-crm-solutions/
+    │   ├── recruitment-services/
+    │   ├── software-development/
+    │   └── training-placement/
+    │
+    ├── app/
+    │   ├── acceptable-use/
+    │   ├── api/
+    │   │   ├── lead/
+    │   │   │   ├── ai-crm-solutions/
+    │   │   │   │   ├── ai-automation/
+    │   │   │   │   └── hubspot-crm/
+    │   │   │   └── software-development/
+    │   │   │       ├── app-maintenance/
+    │   │   │       ├── brand-design/
+    │   │   │       ├── custom-software/
+    │   │   │       ├── mobile-form/
+    │   │   │       ├── ui-ux-design/
+    │   │   │       └── web-form/
+    │   │   │
+    │   │   └── talent/
+    │   │       ├── recruitment-services/
+    │   │       │   ├── campus-recruitment/
+    │   │       │   ├── talent-acquisition/
+    │   │       │   └── TrainingPlacement/
+    │   │       └── training-placement/
+    │   │           └── TrainingPlacement/
+    │   │
+    │   ├── careers/
+    │   │   ├── components/
+    │   │   ├── data/
+    │   │   ├── forms/
+    │   │   │   ├── components/
+    │   │   │   ├── data/
+    │   │   │   └── styles/
+    │   │   ├── recruitment-services/
+    │   │   │   └── [slug]/
+    │   │   └── styles/
+    │   │       └── component-styles/
+    │   │
+    │   ├── cookie-policy/
+    │   ├── hubspot/
+    │   │   ├── components/
+    │   │   ├── data/
+    │   │   ├── packages/
+    │   │   │   └── [slug]/
+    │   │   └── styles/
+    │   │
+    │   ├── privacy-policy/
+    │   ├── services/
+    │   │   └── [slug]/
+    │   ├── terms-of-service/
+    │   └── trust/
+    │
+    ├── components/
+    │   ├── forms/
+    │   │   ├── ai-crm-solutions/
+    │   │   ├── general-lead/
+    │   │   ├── software-development/
+    │   │   └── training-placement/
+    │   ├── layout/
+    │   │   └── core/
+    │   ├── motion/
+    │   ├── sections/
+    │   ├── services/
+    │   └── ui/
+    │       ├── buttons/
+    │       ├── cards/
+    │       ├── cta/
+    │       ├── forms/
+    │       ├── icons/
+    │       ├── layout/
+    │       └── typography/
+    │
+    ├── context/
+    │
+    ├── data/
+    │   ├── assets/
+    │   ├── catalog/
+    │   ├── constants/
+    │   ├── forms/
+    │   │   ├── ai-crm-solutions/
+    │   │   ├── recruitment-services/
+    │   │   ├── software-development/
+    │   │   └── training-placement/
+    │   ├── home/
+    │   ├── layout/
+    │   ├── sections/
+    │   └── services/
+    │       ├── software-development/
+    │       │   └── web/
+    │       └── training-placement/
+    │           └── corporate-training/
+    │
+    ├── lib/
+    │   ├── diagnostics/
+    │   ├── hubspot/
+    │   └── validation/
+    │
+    ├── scripts/
+    │
+    ├── styles/
+    │   ├── forms/
+    │   │   ├── ai-crm-solutions/
+    │   │   ├── recruitment-services/
+    │   │   ├── software-development/
+    │   │   └── training-placement/
+    │   ├── layout/
+    │   ├── sections/
+    │   └── services/
+    │
+    └── utils/
 ```
-
 ---
 
 ## Recommended .gitignore
