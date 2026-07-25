@@ -57,11 +57,41 @@ export const metadata = {
   other: {
     'color-scheme': 'dark',
   },
+  // Google Search Console ownership verification
+  verification: {
+    google: '80237705829b33b2',
+  },
 };
 
 import { DevDiagnostics } from "@/lib/diagnostics/devDiagnostics";
 
 export default function RootLayout({ children }) {
+  // Organization JSON-LD Schema — tells Google this site IS "Zylxy Technologies"
+  // Critical for brand name searches to rank the official website first
+  const organizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Zylxy Technologies',
+    alternateName: 'Zylxy Tech',
+    url: 'https://zylxytech.com',
+    logo: 'https://zylxytech.com/logos/zylxy-logo.png',
+    description: 'Enterprise software development, AI automation, HubSpot CRM implementation, and digital transformation solutions.',
+    foundingDate: '2019',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      availableLanguage: 'English',
+    },
+    sameAs: [
+      'https://www.linkedin.com/company/zylxy',
+      'https://github.com/ZylxyTechnology',
+    ],
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'IN',
+    },
+  };
+
   return (
     <html
       lang="en"
@@ -70,11 +100,12 @@ export default function RootLayout({ children }) {
       style={{ backgroundColor: '#020617', colorScheme: 'dark' }}
     >
       <head>
-        {/*
-         * Critical Performance: Eliminate document latency by preconnecting
-         * to external origins before the browser discovers them from CSS.
-         * This saves 1-3 RTTs on slow mobile connections.
-         */}
+        {/* Organization Schema — connects brand name to this domain in Google's knowledge graph */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        {/* DNS prefetch for Google Fonts to save RTT on first font request */}
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
       </head>
       <body className="min-h-screen flex flex-col bg-background text-foreground">
