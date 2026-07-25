@@ -44,6 +44,14 @@ try {
       console.log('✅ Injected --v8-pool-size=1 into NODE_OPTIONS in .htaccess');
     }
 
+    // Add static asset cache control headers for LiteSpeed if missing
+    if (!htaccessContent.includes('Header set Cache-Control')) {
+      const cacheRules = `\n<IfModule mod_headers.c>\n  <FilesMatch "\\.(js|css|woff|woff2|avif|webp|jpg|jpeg|png|svg|ico)$">\n    Header set Cache-Control "public, max-age=31536000, immutable"\n  </FilesMatch>\n</IfModule>\n<IfModule mod_expires.c>\n  ExpiresActive On\n  ExpiresDefault "access plus 1 year"\n</IfModule>\n`;
+      htaccessContent += cacheRules;
+      modified = true;
+      console.log('✅ Injected Cache-Control & Expires headers into .htaccess');
+    }
+
     if (modified) {
       fs.writeFileSync(htaccessPath, htaccessContent, 'utf8');
       console.log('✅ Successfully patched .htaccess automatically!');
